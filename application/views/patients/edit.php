@@ -9,9 +9,17 @@
     <h2>Edit Patient</h2>
     <?php echo validation_errors(); ?>
     <?php echo form_open_multipart('patient/edit/' . $patient->id); ?>
-    <img src = "<?php echo base_url('./uploads/') . $patient->profile_image ;?>"
-        alt='broken link'
-        style='width:3rem;height:3rem;border-radius:100%;border:1px solid black;'/>
+    <?php 
+         if($patient->profile_image){
+            echo "<img src = '".base_url('./uploads/').$patient->profile_image."' 
+             alt='broken link'
+             style='width:2rem;height:2rem;border-radius:100%;border:1px solid black;'
+             />";
+         }else{
+            echo "Patient has no Image yet";
+         }
+    ?>
+    
     <label>Profile Image:</label>
     <input type="file" name="profile_image">
     <label for="name">First Name</label>
