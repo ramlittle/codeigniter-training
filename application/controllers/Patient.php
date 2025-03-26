@@ -9,6 +9,7 @@ class Patient extends CI_Controller
         parent::__construct();
         $this->load->model('Patient_model');
         $this->load->library('form_validation');
+        $this->load->library('upload'); // Load the upload library
         $this->load->library('session');
     }
 
@@ -19,38 +20,60 @@ class Patient extends CI_Controller
     }
 
     public function add()
-    {
-        $this->form_validation->set_rules('firstname', 'Firstname', 'required|min_length[3]|max_length[255]');
-        $this->form_validation->set_rules('middlename', 'Middlename', 'required|min_length[3]|max_length[255]');
-        $this->form_validation->set_rules('lastname', 'Lastname', 'required|min_length[3]|max_length[255]');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[patients.email]');
-        $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
-        $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
-        $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('patients/add');
+{
+    $this->form_validation->set_rules('firstname', 'Firstname', 'required|min_length[3]|max_length[255]');
+    $this->form_validation->set_rules('middlename', 'Middlename', 'required|min_length[3]|max_length[255]');
+    $this->form_validation->set_rules('lastname', 'Lastname', 'required|min_length[3]|max_length[255]');
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[patients.email]');
+    $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
+    $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
+    $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
+    $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
+
+    if ($this->form_validation->run() == FALSE) {
+        $this->load->view('patients/add');
+    } else {
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'jpg|jpeg|png';
+        $config['max_size'] = 2048; // 2MB max
+        $config['file_name'] = time() . "_" . $_FILES['profile_image']['name'];
+        $this->upload->initialize($config);
+
+        if(!is_dir($config['upload_path'])){
+            mkdir($config['upload_path'],0777, TRUE);
+        }
+
+        if ($this->upload->do_upload('profile_image')) {
+            $uploadData = $this->upload->data();
+            $image = $uploadData['file_name'];
         } else {
-            $patient_data = [
-                'firstname' => $this->input->post('firstname'),
-                'middlename' => $this->input->post('middlename'),
-                'lastname' => $this->input->post('lastname'),
-                'email' => $this->input->post('email'),
-                'phone' => $this->input->post('phone'),
-                'birthdate' => $this->input->post('birthdate'),
-                'sex' => $this->input->post('sex'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
+            $image = null;
+        }
 
-            if ($this->Patient_model->insert_patient($patient_data)) {
-                $this->session->set_flashdata('success', 'Patient added successfull!');
-                redirect('patient/index');
-            } else {
-                $this->session->set_flashdata('error', 'Failed to add patient.');
-                $this->load->view('patients/add');
-            }
+        $patient_data = [
+            'firstname' => $this->input->post('firstname'),
+            'middlename' => $this->input->post('middlename'),
+            'lastname' => $this->input->post('lastname'),
+            'email' => $this->input->post('email'),
+            'phone' => $this->input->post('phone'),
+            'birthdate' => $this->input->post('birthdate'),
+            'sex' => $this->input->post('sex'),
+            'created_at' => date('Y-m-d H:i:s')
+        ];
 
+        if ($image !== null) {
+            $patient_data['profile_image'] = $image;
+        }
+
+        if ($this->Patient_model->insert_patient($patient_data)) {
+            $this->session->set_flashdata('success', 'Patient added successfully!');
+            redirect('patient/index');
+        } else {
+            $this->session->set_flashdata('error', 'Failed to add patient.');
+            $this->load->view('patients/add');
         }
     }
+}
 
     public function edit($id)
     {
@@ -101,5 +124,14 @@ class Patient extends CI_Controller
         }
         redirect('patient/index');
     }
-
+    public function check_image_upload($str)
+    {
+        $file = $_FILES['profile_image'];
+        if ($file['error'] == 0) {
+            return true;
+        } else {
+            $this->form_validation->set_message('check_image_upload', 'Please select an image to upload.');
+            return false;
+        }
+    }
 }
