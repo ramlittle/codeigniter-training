@@ -88,11 +88,29 @@ class Patient extends CI_Controller
         $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
         $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
         $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
+        $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
 
         if ($this->input->post('submit')) {
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('patients/edit', $data);
             } else {
+                $config['upload_path'] = './uploads/';
+                $config['allowed_types'] = 'jpg|jpeg|png';
+                $config['max_size'] = 2048; // 2MB max
+                $config['file_name'] = time() . "_" . $_FILES['profile_image']['name'];
+                $this->upload->initialize($config);
+
+                if (!is_dir($config['upload_path'])) {
+                    mkdir($config['upload_path'], 0777, TRUE);
+                }
+
+                if ($this->upload->do_upload('profile_image')) {
+                    $uploadData = $this->upload->data();
+                    $image = $uploadData['file_name'];
+                } else {
+                    $image = null;
+                }
+
                 $update_data = [
                     'firstname' => $this->input->post('firstname'),
                     'middlename' => $this->input->post('middlename'),
@@ -103,6 +121,11 @@ class Patient extends CI_Controller
                     'sex' => $this->input->post('sex'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
+
+                if ($image !== null) {
+                    $update_data['profile_image'] = $image;
+                }
+
                 if ($this->Patient_model->update_patient($id, $update_data)) {
                     $this->session->set_flashdata('success', 'Patient updated successfully!');
                     redirect('patient/index');
