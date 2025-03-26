@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>IMAGE</th>
                 <th>FIRST NAME</th>
                 <th>MIDDLE NAME</th>
                 <th>LAST NAME</th>
@@ -32,6 +33,16 @@
             <?php foreach ($patients as $patient): ?>
                 <tr>
                     <td><?php echo $patient['id']; ?></td>
+                    <td>
+                        <?php
+                            if($patient['profile_image']){
+                               echo "<img src = '".base_url('./uploads/').$patient['profile_image']."' 
+                                alt='broken link'
+                                style='width:2rem;height:2rem;border-radius:100%;border:1px solid black;'
+                                />";
+                            }
+                        ?>
+                    </td>
                     <td><?php echo $patient['firstname']; ?></td>
                     <td><?php echo $patient['middlename']; ?></td>
                     <td><?php echo $patient['lastname']; ?></td>
