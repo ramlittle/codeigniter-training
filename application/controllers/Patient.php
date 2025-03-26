@@ -20,16 +20,24 @@ class Patient extends CI_Controller
 
     public function add()
     {
-        $this->form_validation->set_rules('name', 'Name', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('firstname', 'Firstname', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('middlename', 'Middlename', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('lastname', 'Lastname', 'required|min_length[3]|max_length[255]');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[patients.email]');
         $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
+        $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
+        $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('patients/add');
         } else {
             $patient_data = [
-                'name' => $this->input->post('name'),
+                'firstname' => $this->input->post('firstname'),
+                'middlename' => $this->input->post('middlename'),
+                'lastname' => $this->input->post('lastname'),
                 'email' => $this->input->post('email'),
                 'phone' => $this->input->post('phone'),
+                'birthdate' => $this->input->post('birthdate'),
+                'sex' => $this->input->post('sex'),
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
@@ -50,17 +58,26 @@ class Patient extends CI_Controller
         if (!$data['patient']) {
             show_404();
         }
-        $this->form_validation->set_rules('name', 'Name', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('firstname', 'Firstname', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('middlename', 'Middlename', 'required|min_length[3]|max_length[255]');
+        $this->form_validation->set_rules('lastname', 'Lastname', 'required|min_length[3]|max_length[255]');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[patients.email]');
         $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
+        $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
+        $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
+
         if ($this->input->post('submit')) {
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('patients/edit', $data);
             } else {
                 $update_data = [
-                    'name' => $this->input->post('name'),
+                    'firstname' => $this->input->post('firstname'),
+                    'middlename' => $this->input->post('middlename'),
+                    'lastname' => $this->input->post('lastname'),
                     'email' => $this->input->post('email'),
                     'phone' => $this->input->post('phone'),
+                    'birthdate' => $this->input->post('birthdate'),
+                    'sex' => $this->input->post('sex'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
                 if ($this->Patient_model->update_patient($id, $update_data)) {
