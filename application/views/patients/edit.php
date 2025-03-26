@@ -35,6 +35,10 @@
 </select>
 
 <input type="submit" name="submit" value="Update Patient"/>
+<button type="button" 
+        onclick="window.location.href='<?php echo site_url('patient/index'); ?>'">
+        Cancel
+</button>
 <?php echo form_close(); ?>
 </body>
 </html>

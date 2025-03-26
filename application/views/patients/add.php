@@ -34,7 +34,10 @@
     </select>
     <br/>
     <button type="submit">Submit</button>
-
+    <button type="button" 
+        onclick="window.location.href='<?php echo site_url('patient/index'); ?>'">
+        Cancel
+    </button>
     
 
     <?php echo form_close(); ?>
