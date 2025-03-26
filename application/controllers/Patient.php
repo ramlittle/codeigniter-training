@@ -28,7 +28,7 @@ class Patient extends CI_Controller
         $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
         $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
         $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
-        $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
+        // $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('patients/add');
@@ -84,11 +84,11 @@ class Patient extends CI_Controller
         $this->form_validation->set_rules('firstname', 'Firstname', 'required|min_length[3]|max_length[255]');
         $this->form_validation->set_rules('middlename', 'Middlename', 'required|min_length[3]|max_length[255]');
         $this->form_validation->set_rules('lastname', 'Lastname', 'required|min_length[3]|max_length[255]');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[patients.email]');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('phone', 'Phone', 'required|min_length[10]|max_length[15]');
         $this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
         $this->form_validation->set_rules('sex', 'Sex', 'required|in_list[M,F]');
-        $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
+        // $this->form_validation->set_rules('profile_image', 'Profile Image', 'callback_check_image_upload');
 
         if ($this->input->post('submit')) {
             if ($this->form_validation->run() == FALSE) {
