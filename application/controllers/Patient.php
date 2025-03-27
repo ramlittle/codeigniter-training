@@ -159,32 +159,15 @@ class Patient extends CI_Controller
     }
 
 
-    // public function getPatientByID($id)
-    // {
-    //     $output = [];
-
-    //     $data = $this->Patient_model->get_patient_by_id($id);
-    //     echo 'my data'.json_encode($data);
-
-    //     $output = array(
-    //         'name' => $data['firstname'] . ' ' . $data['middlename'] . ' ' . $data['lastname'],
-    //         'birthday' => date('m/d/Y', strtotime($data['birthdate'])),
-    //         'sex' => ($data['sex'] == 'F') ? 'FEMALE' : 'MALE',
-    //         'email' => $data['email'],
-    //         'phone' => $data['phone']
-    //     );
-
-    //     return $this->output
-    //         ->set_content_type('application/json')
-    //         ->set_output(json_encode($output));
-    // }
-
-
     public function getPatientByID($id)
     {
         $data = $this->Patient_model->get_patient_by_id($id);
         $output = array(
             'name' => $data->firstname . ' ' . $data->middlename . ' ' . $data->lastname,
+            'firstname' => $data->firstname,
+            'middlename'=>$data->middlename,
+            'lastname'=>$data->lastname,
+            'image' => $data->profile_image,
             'birthday' => date('m/d/Y', strtotime($data->birthdate)),
             'sex' => ($data->sex == 'F') ? 'FEMALE' : 'MALE',
             'email' => $data->email,
