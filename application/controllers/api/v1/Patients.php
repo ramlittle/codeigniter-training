@@ -50,6 +50,39 @@ class Patients extends CI_Controller {
      
     }
 
+    /**
+     * @OA\GET(
+     *     path="/api/v1/Patients/get_patient/{patientid}",
+     *     summary="Get patient data by ID",
+     *     tags={"Patient"},
+     *     @OA\Parameter(
+     *         name="patientid",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the patient",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Patient data retrieved successfully"
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Patient not found"
+     *     ),
+     *     security={{"basicAuth": {}}}
+     * )
+     */
+    public function get_patient($patientid) {
+        $output = $this->Patient_model->get_patient_by_id($patientid);
+        
+        if ($output) {
+            echo json_encode($output);
+        } else {
+            show_404();
+        }
+    }
+
     
 
 }
