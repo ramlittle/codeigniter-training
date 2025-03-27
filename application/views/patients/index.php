@@ -53,15 +53,62 @@
                     <td>
                         <a href="<?php echo site_url('patient/edit/'.$patient['id']); ?>">Edit</a> |
                         <a href="<?php echo site_url('patient/delete/'.$patient['id']); ?>" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href=''>Show modal data</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <!-- PATIENTS DETAILS MODAL -->
+    <div class='modal fade' id='patientModal' aria-hidden='true'>
+        <div class='modal-dialog'>
+            <div class='modal-header'>
+                <h5 class='modal-title'>Patient Details</h5>
+                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='close'>Close</button>
+            </div>
+            <div class='modal-body'>
+                <p>
+                    <strong>Name:
+                        <span id='patientName'></span>
+                    </strong>
+                    <strong>Email:
+                        <span id='patientEmail'></span>
+                    </strong>
+                    <strong>Phone:
+                        <span id='patientPhone'></span>
+                    </strong>
+                    <strong>Address:
+                        <span id='patientAddress'></span>
+                    </strong>
+                </p>
+            </div>
+            <div class='modalfooter'>
+                <button type='button' class='btn btn-secondary' data-bs-dismis='modal'>Close</button>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function() {
             $('#patientsTable').DataTable();
         });
+
+        function getPatientById($id){
+            $.ajax({
+            type: 'GET',
+            url: "<?php echo base_url('patient/getPatientByID/'.$id); ?>",
+            dataType: 'json',
+            success: function(data) {
+                console.log('data here',data);
+                // Update HTML elements with patient data
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+        }
+        
+        getPatientById(9);
     </script>
 </body>
 </html>

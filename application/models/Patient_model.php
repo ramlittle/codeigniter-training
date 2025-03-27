@@ -40,7 +40,8 @@ private $table = 'patients';
 		return $this->db->insert($this->table, $data);
 	}
 
-	// Read a single patient by ID
+	// Read a single patient by ID (ORIGINAL)
+	
 	public function get_patient_by_id($id)
 	{
 		$query = $this->db->get_where($this->table, array('id' => $id));
@@ -69,3 +70,4 @@ private $table = 'patients';
 		return $query->row();
 	}
 }
+

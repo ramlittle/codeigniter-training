@@ -56,3 +56,4 @@ $route['patient']['GET'] = 'Patient/index';
 $route['patient/create']['POST']='Patient/add';
 $route['patient/edit/(:any)']['GET']='Patient/edit/$1';
 $route['patient/delete/(:any)']['GET']='Patient/delete/$1';
+$route['patient/getPatientByID/(:any)']['GET']='Patient/getPatientByID/$1';
