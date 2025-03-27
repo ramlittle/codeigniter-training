@@ -18,6 +18,7 @@ private $table = 'users';
     // Create a new user
     public function insert_user($data)
 	{
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 		return $this->db->insert($this->table, $data);
 	}
 
