@@ -20,6 +20,7 @@
         <p style="color: green;"><?php echo $this->session->flashdata('success'); ?></p>
     <?php endif; ?>
     <a href="<?php echo site_url('patient/add'); ?>">Add New Patient</a>
+    <a href="<?php echo site_url('user/logout'); ?>" class="btn btn-danger">Logout</a>
     <table id="patientsTable" style='width:100%;'>
         <thead>
             <tr>

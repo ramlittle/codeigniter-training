@@ -62,8 +62,14 @@ $route['patient/edit/(:any)']['GET']='Patient/edit/$1';
 $route['patient/delete/(:any)']['GET']='Patient/delete/$1';
 $route['patient/getPatientByID/(:any)']['GET']='Patient/getPatientByID/$1';
 
+//API ROUTE PATIENT
+// $route['/api/v1/get-all-patient']['GET']='api/v1/Patient/all';
+
 //USERS
 $route['user/login']['POST']='User/login';
 $route['user/register']['POST']='User/register';
+
+
+
 
 

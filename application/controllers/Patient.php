@@ -177,4 +177,38 @@ class Patient extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($output));
     }
+
+
+        /**
+     * @OA\GET(
+     *     path="/api/v1/regions",
+     *     summary="This will return all regions",
+     *     tags={"Patient"},
+     *     @OA\Response(
+     *         response="404",
+     *         description="Username is already taken."
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="Email is already registered."
+     *     ),     
+     *      @OA\Response(
+     *         response="202",
+     *         description="Registration successful! Please log in."
+     *     ),
+     *      @OA\Response(
+     *         response="403",
+     *         description="Registration failed. Try again.."
+     *     ),
+     *      security={{"basicAuth": {}}}
+     * )
+     */
+    public function all() {
+        echo "this is the way";
+    }
+public function getall()
+
+{
+    
+}
 }

@@ -1,19 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * @OA\Info(
- *     title="iHOMIS+ API",
- *     version="0.1",
- * )
- * @OA\Server(url="https://codeigniter.test")
- * @OA\SecurityScheme(
- * securityScheme="BasicAuth",
- * type="http",
- * scheme="basic"
- * )
- */
-
 class Regions extends CI_Controller {
 
     public function __construct() {
