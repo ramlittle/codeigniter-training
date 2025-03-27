@@ -65,3 +65,5 @@ $route['patient/getPatientByID/(:any)']['GET']='Patient/getPatientByID/$1';
 //USERS
 $route['user/login']['POST']='User/login';
 $route['user/register']['POST']='User/register';
+
+
