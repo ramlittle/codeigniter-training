@@ -161,6 +161,72 @@ class Patients extends CI_Controller {
         }
     }
 
+
+    /**
+ * @OA\PUT(
+ *     path="/api/v1/Patients/update_patient/{patient_id}",
+ *     summary="Update an existing patient record",
+ *     tags={"Patient"},
+ *     @OA\Parameter(
+ *         name="patient_id",
+ *         in="path",
+ *         required=true,
+ *         description="ID of the patient to update",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"firstname", "middlename", "lastname"},
+ *             @OA\Property(property="firstname", type="string", example="John"),
+ *             @OA\Property(property="middlename", type="string", example="Michael"),
+ *             @OA\Property(property="lastname", type="string", example="Doe")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="Patient updated successfully"
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         description="Invalid input"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="Patient not found"
+ *     ),
+ *     security={{"basicAuth": {}}}
+ * )
+ */
+public function update_patient($patient_id) {
+    $input = json_decode(trim(file_get_contents("php://input")), true);
+
+    if (!isset($input['firstname']) || !isset($input['middlename']) || !isset($input['lastname'])) {
+        http_response_code(400);
+        echo json_encode(["message" => "Invalid input"]);
+        return;
+    }
+
+    // Check if patient exists
+    $existing_patient = $this->Patient_model->get_patient_by_id($patient_id);
+    if (!$existing_patient) {
+        http_response_code(404);
+        echo json_encode(["message" => "Patient not found"]);
+        return;
+    }
+
+    // Update patient record
+    $updated = $this->Patient_model->update_patient($patient_id, $input);
+
+    if ($updated) {
+        http_response_code(200);
+        echo json_encode(["message" => "Patient updated successfully"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["message" => "Failed to update patient"]);
+    }
+}
+
     
 
 }

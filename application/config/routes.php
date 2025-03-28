@@ -67,6 +67,8 @@ $route['/api/v1/patients']['GET']='api/v1/patients/all';
 $route['api/v1/patients/(:num)'] = 'api/v1/patients/get_patient/$1';
 $route['api/v1/patient/(:num)']['delete'] = 'api/v1/patients/delete_patient/$1';
 $route['api/v1/patient']['post'] = 'api/v1/patients/create_patient';
+$route['api/v1/patient/(:num)']['put'] = 'api/v1/patients/update_patient/$1';
+
 
 //USERS
 $route['user/login']['POST']='User/login';
