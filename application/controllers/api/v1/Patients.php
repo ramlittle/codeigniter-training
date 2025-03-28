@@ -115,6 +115,52 @@ class Patients extends CI_Controller {
             show_404();
         }
     }
+
+        /**
+     * @OA\POST(
+     *     path="/api/v1/Patients/create_patient",
+     *     summary="Create a new patient record",
+     *     tags={"Patient"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"firstname", "middlename", "lastname"},
+     *             @OA\Property(property="firstname", type="string", example="John Doe"),
+     *             @OA\Property(property="middlename", type="string", example="John Doe"),
+     *             @OA\Property(property="lastname", type="string", example="John Doe")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="Patient created successfully"
+     *     ),
+     *     @OA\Response(
+     *         response="400",
+     *         description="Invalid input"
+     *     ),
+     *     security={{"basicAuth": {}}}
+     * )
+     */
+    public function create_patient() {
+        $input = json_decode(trim(file_get_contents("php://input")), true);
+
+        if (!isset($input['firstname']) || !isset($input['middlename']) || !isset($input['lastname'])) {
+            http_response_code(400);
+            echo json_encode(["message" => "Invalid input"]);
+            return;
+        }
+
+        $patient_id = $this->Patient_model->insert_patient($input);
+
+        if ($patient_id) {
+            http_response_code(201);
+            echo json_encode(["message" => "Patient created successfully", "patient_id" => $patient_id]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["message" => "Failed to create patient"]);
+        }
+    }
+
     
 
 }

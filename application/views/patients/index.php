@@ -41,7 +41,11 @@
                 <tr>
                     <td><?php echo $patient['id']; ?></td>
                     <td>
-                        IMAGE HERE
+                        <img 
+                            src="<?php echo base_url('/uploads/'.$patient['profile_image']);?>"
+                            alt="broken link"
+                            style="width:5rem;height:5rem;border-radius:100%;border:0.25rem solid black;"
+                            />
                     </td>
                     <td><?php echo $patient['firstname']; ?></td>
                     <td><?php echo $patient['middlename']; ?></td>
