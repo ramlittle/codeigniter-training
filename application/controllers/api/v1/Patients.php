@@ -83,6 +83,38 @@ class Patients extends CI_Controller {
         }
     }
 
+    /**
+     * @OA\DELETE(
+     *     path="/api/v1/Patients/delete_patient/{patientid}",
+     *     summary="Delete a patient by ID",
+     *     tags={"Patient"},
+     *     @OA\Parameter(
+     *         name="patientid",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the patient to delete",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Patient deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Patient not found"
+     *     ),
+     *     security={{"basicAuth": {}}}
+     * )
+     */
+    public function delete_patient($patientid) {
+        $deleted = $this->Patient_model->delete_patient($patientid);
+        
+        if ($deleted) {
+            echo json_encode(["message" => "Patient deleted successfully"]);
+        } else {
+            show_404();
+        }
+    }
     
 
 }
